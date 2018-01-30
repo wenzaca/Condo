@@ -1,50 +1,137 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.7.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-		classpath('org.junit.platform:junit-platform-gradle-plugin:1.0.0')
+    ext {
+        springBootVersion = '1.5.7.RELEASE'
+        sonarGradlePluginVersion = '2.5'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('org.junit.platform:junit-platform-gradle-plugin:1.0.0')
+        classpath("org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:${sonarGradlePluginVersion}")
+        classpath("org.ajoberstar:gradle-jacoco:0.1.0")
 
-	}
+    }
 }
 
 plugins {
-	id 'io.franzbecker.gradle-lombok' version '1.8'
-	id 'java'
+
+    // core plugins
+    id 'java'
+    id 'eclipse'
+    id 'maven'
+    id 'maven-publish'
+
+    // Spring plugins
+    id "org.springframework.boot" version "1.5.2.RELEASE"
+    id "io.spring.dependency-management" version "0.6.0.RELEASE"
+
+    // JFrog Artifactory plugins
+    id "com.jfrog.artifactory" version "4.4.12"
+    id "org.asciidoctor.convert" version "1.5.3"
+
+    // Lombok
+    id 'io.franzbecker.gradle-lombok' version '1.8'
+
+    //Sonarqube
+    id "org.sonarqube" version "2.5"
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'org.springframework.boot'
 apply plugin: 'idea'
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: "io.spring.dependency-management"
 
 
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
+ext {
+    swaggerVersion = '2.6.1'
+}
+
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:Edgware.RELEASE'
+    }
+}
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.apache.logging.log4j:log4j:2.9.0')
-	compile(group: 'com.google.code.gson', name: 'gson', version: '2.7')
-	runtime('org.springframework.boot:spring-boot-devtools')
-	//runtime('org.postgresql:postgresql')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile(group: 'org.easymock', name: 'easymock', version: '3.5')
-	testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
-	testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0")
-	runtime(group: 'com.h2database', name: 'h2', version: '1.3.148')
+
+    //Eureka Server
+    compile('org.springframework.cloud:spring-cloud-starter-netflix-eureka-server')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    //Mockito
+    testCompile(group: 'org.easymock', name: 'easymock', version: '3.5')
+
+    // Swagger dependencies
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: "${project.ext['swaggerVersion']}", transitive: true
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: "${project.ext['swaggerVersion']}", transitive: true
+
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.apache.logging.log4j:log4j:2.9.0')
+    compile(group: 'com.google.code.gson', name: 'gson', version: '2.7')
+    runtime('org.springframework.boot:spring-boot-devtools')
+    //runtime('org.postgresql:postgresql')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.0.0")
+    runtime(group: 'com.h2database', name: 'h2', version: '1.3.148')
 
 }
 
+sonarqube {
+    properties {
+        // Sonar Specific properties
+        property "sonar.projectName", "condominium.condo"
+        property "sonar.projectKey", "org.sonarqube:condominium.condo"
+        property 'sonar.host.url', 'http://localhost:9000' // This is the Sonar Server
+        //property 'sonar.jacoco.reportPaths', ''
+    }
+
+    apply plugin: 'checkstyle'
+    checkstyle {
+        toolVersion = '7.6.1'
+        ignoreFailures = true
+        configFile = new File(rootDir, "/config/checkstyle/google_checks.xml")
+    }
+
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.enabled true
+            html.enabled true
+            //html.stylesheet resources.text.fromFile('config/xsl/checkstyle-custom.xsl')
+        }
+    }
+}
+
+task pathingJar(type: Jar) {
+    dependsOn configurations.runtime
+    appendix = 'pathing'
+
+    doFirst {
+        manifest {
+            attributes "Class-Path": configurations.runtime.files.collect {
+                it.toURL().toString().replaceFirst("file:/", '/')
+            }.join(" ")
+        }
+    }
+}
+
+bootRun {
+    // support passing -Dsystem.property=value to bootRun task
+    systemProperties = System.properties
+    dependsOn pathingJar
+    doFirst {
+        classpath = files("$buildDir/classes/main", "$buildDir/resources/main", pathingJar.archivePath)
+    }
+}

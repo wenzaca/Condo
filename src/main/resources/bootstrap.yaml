@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: resourcemanagement.knowledgebase.package
+  jackson:
+    default-property-inclusion: non_null
+
+swagger:
+  title: PackageService REST APIs CI/CD Demo test
+  description: This successfully showcased CI/CD via Jenkins pipeline build
+  contact:
+    name: Wendler Zacariotto
+    url: http://www.ebsco.com
+    email: wzacariotto@ebsco.com
+  version: 1.0.0
