@@ -47,7 +47,17 @@ public class DwellerController {
         return this.dwellerService.getAllDwellers();
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Data Integrity Violation")
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete Dweller")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "BAD_REQUEST"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
+    public void deleteDweller(@PathVariable("id") long id) throws InvalidUserException{
+        dwellerService.deleteDweller(id);
+    }
+
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Data Integrity Violation")
     @ExceptionHandler({DataIntegrityViolationException.class})
     public void dataIntegrityViolation() {
     }
