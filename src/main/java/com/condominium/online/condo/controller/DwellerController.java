@@ -3,37 +3,52 @@ package com.condominium.online.condo.controller;
 import com.condominium.online.condo.entity.Dweller;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.service.DwellerService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequestMapping("/condo/dweller")
+@Api("v1 - Dweller")
 public class DwellerController {
 
     private DwellerService dwellerService;
 
     @Autowired
-    public DwellerController(DwellerService dwellerService){
+    public DwellerController(DwellerService dwellerService) {
         this.dwellerService = dwellerService;
     }
 
-    @PostMapping("/dweller")
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiOperation(value = "Create Dweller")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "BAD_REQUEST"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
     @ResponseStatus(code = HttpStatus.CREATED)
-    public Dweller saveDweller(@RequestBody Dweller dweller) throws InvalidUserException {
-        return dwellerService.saveDweller(dweller);
+    public Dweller saveDweller(@RequestBody(required = true) Dweller dweller) throws InvalidUserException {
+        return this.dwellerService.saveDweller(dweller);
     }
 
-    @GetMapping("/dwellers")
-    public List<Dweller> getDwellers(){
-        return dwellerService.getAllDwellers();
+    @RequestMapping(method = RequestMethod.GET)
+    @ApiOperation(value = "Find all Dweller on database.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", responseContainer = "List", response = Package.class),
+            @ApiResponse(code = 400, message = "BAD_REQUEST"), @ApiResponse(code = 404, message = "NOT_FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public List<Dweller> getDwellers() {
+        return this.dwellerService.getAllDwellers();
     }
 
-    @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Data Integrity Violation")
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Data Integrity Violation")
     @ExceptionHandler({DataIntegrityViolationException.class})
-    public void dataIntegrityViolation(){
+    public void dataIntegrityViolation() {
     }
 }

@@ -52,7 +52,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenReturn(new Guest(GUEST_NAME, GUEST_CPF, GUEST_APT));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value(GUEST_NAME))
@@ -66,7 +66,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -77,7 +77,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -88,7 +88,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest());
     }
@@ -99,7 +99,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest());
     }
@@ -110,7 +110,7 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest());
     }
@@ -121,13 +121,13 @@ public class GuestControllerTest {
 
         when(guestService.saveGuest(guest)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/guest").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
-        this.mockMvc.perform(post("/guest")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/condo/guest")).andExpect(status().isBadRequest());
     }
 }
