@@ -7,7 +7,6 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,8 +27,9 @@ public class ApartmentManagerController {
             @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "BAD_REQUEST"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
-    public ResponseEntity<ApartmentManager> saveApartmentManager(@RequestBody(required = true) ApartmentManager apartmentManager) throws InvalidUserException {
-        return new ResponseEntity(this.apartmentManagerService.saveApartmentManager(apartmentManager), HttpStatus.OK);
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public ApartmentManager saveApartmentManager(@RequestBody(required = true) ApartmentManager apartmentManager) throws InvalidUserException {
+        return this.apartmentManagerService.saveApartmentManager(apartmentManager);
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Data Integrity Violation")

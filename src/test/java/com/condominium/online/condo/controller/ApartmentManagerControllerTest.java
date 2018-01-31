@@ -51,7 +51,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenReturn(new ApartmentManager(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value(DWELLER_NAME))
@@ -65,7 +65,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -76,7 +76,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -87,7 +87,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest());
     }
@@ -98,7 +98,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest());
     }
@@ -109,7 +109,7 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest());
     }
@@ -120,13 +120,13 @@ public class ApartmentManagerControllerTest {
 
         when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/apartmentManager").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
-        this.mockMvc.perform(post("/apartmentManager")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/condo/apartmentManager")).andExpect(status().isBadRequest());
     }
 }

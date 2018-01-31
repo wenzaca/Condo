@@ -52,7 +52,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenReturn(new Dweller(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
             .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name").value(DWELLER_NAME))
@@ -66,7 +66,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -77,7 +77,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest()).andDo(print());
     }
@@ -88,7 +88,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest());
     }
@@ -99,7 +99,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid name"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest());
     }
@@ -110,7 +110,7 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid CPF"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest());
     }
@@ -121,13 +121,13 @@ public class DwellerControllerTest {
 
         when(dwellerService.saveDweller(dweller)).thenThrow(new InvalidUserException("Invalid apartment"));
 
-        this.mockMvc.perform(post("/dweller").contentType(MediaType.APPLICATION_JSON)
+        this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(dweller)))
                 .andExpect(status().isBadRequest());
     }
 
     @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
-        this.mockMvc.perform(post("/dweller")).andExpect(status().isBadRequest());
+        this.mockMvc.perform(post("/condo/dweller")).andExpect(status().isBadRequest());
     }
 }
