@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode
 public class ApartmentManager extends User implements IApartmentManager {
 
     // for jpa

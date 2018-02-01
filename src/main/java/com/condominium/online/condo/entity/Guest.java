@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 
 @Entity
+@EqualsAndHashCode
 public class Guest extends User implements IGuest {
 
     @Getter

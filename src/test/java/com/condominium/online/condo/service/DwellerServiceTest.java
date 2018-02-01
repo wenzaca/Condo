@@ -7,12 +7,15 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
@@ -107,5 +110,30 @@ public class DwellerServiceTest {
         expectedException.expectMessage("Invalid apartment");
 
         registerDwellerService.saveDweller(dweller1);
+    }
+
+    @Test
+    public void whenRemovingExistingUserThenReturnSuccessful() throws InvalidUserException{
+        dweller1.setId(123);
+
+        when(dwellerRepository.exists(dweller1.getId())).thenReturn(true);
+        doNothing().when(dwellerRepository).delete(dweller1.getId());
+
+        registerDwellerService.deleteDweller(dweller1.getId());
+
+        verify(dwellerRepository).delete(123);
+    }
+
+    @Test
+    public void whenRemovingNonExistingUserIdThenReturnInvalidUserException() throws InvalidUserException{
+        dweller1.setId(0);
+
+        expectedException.expect(InvalidUserException.class);
+        expectedException.expectMessage("No such user");
+
+        when(dwellerRepository.exists(dweller1.getId())).thenReturn(false);
+        doNothing().when(dwellerRepository).delete(dweller1.getId());
+
+        registerDwellerService.deleteDweller(dweller1.getId());
     }
 }

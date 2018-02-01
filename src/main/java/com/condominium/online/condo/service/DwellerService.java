@@ -41,6 +41,16 @@ public class DwellerService implements IDwellerService {
         return dwellerRepository.save(dweller).orElseThrow(InvalidUserException::new);
     }
 
+    @Override
+    public void deleteDweller(long id) throws InvalidUserException {
+
+        if(!dwellerRepository.exists(id)){
+            throw new InvalidUserException("No such user");
+        }
+
+        dwellerRepository.delete(id);
+    }
+
     public List<Dweller> getAllDwellers(){
         return dwellerRepository.findAll();
     }

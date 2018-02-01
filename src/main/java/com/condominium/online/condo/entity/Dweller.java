@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.Entity;
 
 @Entity
+@EqualsAndHashCode
 public class Dweller extends User implements IDweller {
 
     public Dweller(){

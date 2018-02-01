@@ -16,7 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -129,5 +132,19 @@ public class DwellerControllerTest {
     @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
         this.mockMvc.perform(post("/condo/dweller")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteDwellerShouldReturn_OK() throws Exception{
+        doNothing().when(dwellerService).deleteDweller(dweller.getId());
+
+        this.mockMvc.perform(delete("/condo/dweller/" + dweller.getId())).andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteDwellerShouldReturn_ThrowInvalidUser() throws Exception{
+        doThrow(new InvalidUserException("No such user")).when(dwellerService).deleteDweller(dweller.getId());
+
+        this.mockMvc.perform(delete("/condo/dweller/" + dweller.getId())).andExpect(status().isBadRequest());
     }
 }

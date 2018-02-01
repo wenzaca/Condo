@@ -10,4 +10,6 @@ public interface IDwellerService {
 
     Dweller saveDweller(Dweller dweller) throws InvalidUserException;
 
+    void deleteDweller(long id) throws InvalidUserException;
+
 }
