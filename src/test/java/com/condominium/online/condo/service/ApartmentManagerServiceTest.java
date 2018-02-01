@@ -5,14 +5,16 @@ import com.condominium.online.condo.entity.ApartmentManager;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.repository.ApartmentManagerRepository;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 public class ApartmentManagerServiceTest {
@@ -21,6 +23,9 @@ public class ApartmentManagerServiceTest {
     private static final String APARTMENT_MANAGER_1_CPF = "123.456.789.00";
     private static final String APARTMENT_MANAGER_1_APARTMENT_NUMBER = "68C";
     private ApartmentManager apartmentManager;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
 
     @InjectMocks
@@ -51,6 +56,9 @@ public class ApartmentManagerServiceTest {
     public void whenSaveApartmentManagerWithNullNameThenReturnInvalidUserException() throws Exception{
         apartmentManager.setName(null);
 
+        expectedException.expect(InvalidUserException.class);
+        expectedException.expectMessage("Invalid name");
+
         apartmentManagerService.saveApartmentManager(apartmentManager);
     }
 
@@ -66,5 +74,29 @@ public class ApartmentManagerServiceTest {
         apartmentManager.setApartmentNumber(null);
 
         apartmentManagerService.saveApartmentManager(apartmentManager);
+    }
+
+    @Test
+    public void whenRemovingExistingApartmentManagerThenReturnSuccessful() throws InvalidUserException{
+        apartmentManager.setId(123);
+
+        when(apartmentManagerRepository.exists(apartmentManager.getId())).thenReturn(true);
+        doNothing().when(apartmentManagerRepository).delete(apartmentManager.getId());
+
+        apartmentManagerService.deleteApartmentManager(apartmentManager.getId());
+
+        verify(apartmentManagerRepository).delete(123);
+    }
+
+    @Test
+    public void whenRemovingNonExistingApartmentManagerThenReturnInvalidUserException() throws InvalidUserException{
+        apartmentManager.setId(-1);
+
+        expectedException.expect(InvalidUserException.class);
+        expectedException.expectMessage("No such apartment manager");
+
+        when(apartmentManagerRepository.exists(apartmentManager.getId())).thenReturn(false);
+
+        apartmentManagerService.deleteApartmentManager(apartmentManager.getId());
     }
 }

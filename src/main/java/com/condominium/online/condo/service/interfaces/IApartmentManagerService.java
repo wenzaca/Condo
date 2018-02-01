@@ -7,4 +7,6 @@ public interface  IApartmentManagerService {
 
     ApartmentManager saveApartmentManager(ApartmentManager ApartmentManager) throws InvalidUserException;
 
+    void deleteApartmentManager(long id) throws InvalidUserException;
+
 }
