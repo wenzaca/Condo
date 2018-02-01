@@ -37,4 +37,16 @@ public class ApartmentManagerService implements IApartmentManagerService {
 
         return apartmentManagerRepository.save(apartmentManager).orElseThrow(InvalidUserException::new);
     }
+
+    @Override
+    public void deleteApartmentManager(long id) throws InvalidUserException {
+
+        if(!apartmentManagerRepository.exists(id)){
+            throw new InvalidUserException("No such apartment manager");
+        }
+
+        apartmentManagerRepository.delete(id);
+    }
+
+
 }

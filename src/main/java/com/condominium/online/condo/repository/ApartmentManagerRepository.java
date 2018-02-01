@@ -10,4 +10,8 @@ public interface ApartmentManagerRepository extends Repository<ApartmentManager,
 
     Optional<ApartmentManager> save(ApartmentManager apartmentManager);
 
+    void delete(long id);
+
+    boolean exists(long id);
+
 }

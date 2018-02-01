@@ -15,7 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -128,5 +131,21 @@ public class ApartmentManagerControllerTest {
     @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
         this.mockMvc.perform(post("/condo/apartmentManager")).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void deleteApartmentManagerShouldReturn_OK() throws Exception{
+
+        doNothing().when(apartmentManagerService).deleteApartmentManager(apartmentManager.getId());
+
+        this.mockMvc.perform(delete("/condo/apartmentManager/" + apartmentManager.getId())).andExpect(status().isOk());
+    }
+
+    @Test
+    public void deleteInvalidApartmentManagerShouldReturn_BAD_REQUEST() throws Exception{
+
+        doThrow(new InvalidUserException("No such apartment manager")).when(apartmentManagerService).deleteApartmentManager(apartmentManager.getId());
+
+        this.mockMvc.perform(delete("/condo/apartmentManager/" + apartmentManager.getId())).andExpect(status().isBadRequest());
     }
 }
