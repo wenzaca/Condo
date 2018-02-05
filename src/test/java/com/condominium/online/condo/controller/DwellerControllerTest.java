@@ -16,11 +16,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -130,15 +127,43 @@ public class DwellerControllerTest {
     }
 
     @Test
+    public void updateDwellerShouldReturn_OK() throws Exception{
+        long id = 123;
+        dweller.setId(id);
+
+        when(dwellerService.updateDweller(id, dweller)).thenReturn(new Dweller(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
+
+        this.mockMvc.perform(put("/condo/dweller/"+dweller.getId()).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonMapper.writeValueAsString(dweller)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.name").value(DWELLER_NAME))
+                .andExpect(jsonPath("$.cpf").value(DWELLER_CPF))
+                .andExpect(jsonPath("$.apartmentNumber").value(DWELLER_APT));
+    }
+
+    @Test
+    public void updateNonExistentDwellerShouldReturn_BAD_REQUEST() throws Exception{
+        long id = -1;
+        dweller.setId(id);
+
+        when(dwellerService.updateDweller(id, dweller)).thenThrow(new InvalidUserException("No such user"));
+
+        this.mockMvc.perform(put("/condo/dweller/" + dweller.getId()).contentType(MediaType.APPLICATION_JSON)
+                .content(jsonMapper.writeValueAsString(dweller)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
     public void emptyBodyShouldReturn_BAD_REQUEST() throws Exception{
         this.mockMvc.perform(post("/condo/dweller")).andExpect(status().isBadRequest());
     }
 
     @Test
     public void deleteDwellerShouldReturn_OK() throws Exception{
-        doNothing().when(dwellerService).deleteDweller(dweller.getId());
+        long id = 1;
+        doNothing().when(dwellerService).deleteDweller(id);
 
-        this.mockMvc.perform(delete("/condo/dweller/" + dweller.getId())).andExpect(status().isOk());
+        this.mockMvc.perform(delete("/condo/dweller/" + id)).andExpect(status().isOk());
     }
 
     @Test

@@ -7,16 +7,13 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 public class DwellerServiceTest {
@@ -108,6 +105,38 @@ public class DwellerServiceTest {
 
         expectedException.expect(InvalidUserException.class);
         expectedException.expectMessage("Invalid apartment");
+
+        registerDwellerService.saveDweller(dweller1);
+    }
+
+    @Test
+    public void whenUpdatingDwellerThenReturnUpdatedDweller() throws Exception{
+
+        when(dwellerRepository.exists(dweller1.getId())).thenReturn(true);
+        when(dwellerRepository.save(dweller1)).thenReturn(Optional.ofNullable(dweller1));
+
+        Dweller updatedDweller = registerDwellerService.saveDweller(dweller1);
+
+        assertEquals(updatedDweller.getId(), dweller1.getId());
+        assertEquals(updatedDweller.getName(), DWELLER1_NAME);
+    }
+
+    @Test
+    public void whenUpdatingDwellerWithInvalidNameThenReturnInvalidUserException() throws Exception{
+        dweller1.setName("");
+
+        expectedException.expect(InvalidUserException.class);
+        expectedException.expectMessage("Invalid Name");
+
+        registerDwellerService.saveDweller(dweller1);
+    }
+
+    @Test
+    public void whenUpdatingDwellerWithNullNameThenReturnInvalidUserException() throws Exception{
+        dweller1.setName(null);
+
+        expectedException.expect(InvalidUserException.class);
+        expectedException.expectMessage("Invalid Name");
 
         registerDwellerService.saveDweller(dweller1);
     }

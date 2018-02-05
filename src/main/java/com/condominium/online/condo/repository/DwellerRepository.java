@@ -10,9 +10,9 @@ public interface DwellerRepository extends Repository <Dweller, Long>{
 
     Optional<Dweller> save(Dweller dweller);
 
-    void delete(long id);
-
     boolean exists(long id);
+
+    void delete(long id);
 
     List<Dweller> findAll();
 }
