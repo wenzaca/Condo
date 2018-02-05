@@ -9,16 +9,21 @@ const HtmlWebpackPluginInstance = new HtmlWebpackPlugin({
 
 const webpackConfigurations = {
     context: __dirname,
-    entry: `${__dirname}/src/bootstrap.js`,
+    entry: `${__dirname}/src/main.js`,
     devtool: 'source-map',
     module: {
         loaders: [{
-            test:/\.js$/,
+            test: /\.js$/,
             loader: 'babel-loader',
             exclude: /node_modules/,
             options: {
-                presets: ['react', 'es2015','stage-1']
+                presets: ['react', 'es2015', 'stage-1']
             }
+        },
+        {
+            test:/\.css$/,
+            loader:'style-loader!css-loader'
+
         }]
     },
     output: {

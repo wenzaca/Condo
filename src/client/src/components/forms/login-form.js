@@ -1,7 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import InputWrapper from '../inputs/input';
-import SubmitButton from '../buttons/submit-button';
 
 class LoginForm extends React.Component {
     constructor(props) {
@@ -15,15 +13,18 @@ class LoginForm extends React.Component {
 
     render() {
         return (
-            <form>
-                <h3> {this.props.title} </h3>
-                <InputWrapper label="Username">
-                    <input type="text" id="username" />
-                </InputWrapper>
-                <InputWrapper label="Password">
-                    <input type="password" id="password" />
-                </InputWrapper>
-                <SubmitButton text="Enviar" action={this.submit} />
+            <form action="" className="p-5">
+                <h3 className="display-4 text-center"> {this.props.title} </h3>
+                <div className="form-group">
+                    <input className="form-control form-control-lg" placeholder="E-mail" type="text" />
+                </div>
+                <div className="form-group">
+                    <input className="form-control form-control-lg" placeholder="Senha" type="password" />
+                </div>
+                <div className="form-group">
+                    <button className="btn btn-info btn-lg btn-block" onClick={this.submit}>Entrar</button>
+                    <button className="btn btn-lg btn-block" onClick={this.googleLogin}>Entrar com o Google</button>
+                </div>
             </form>
         );
     }
