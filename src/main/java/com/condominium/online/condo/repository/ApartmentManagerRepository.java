@@ -6,12 +6,5 @@ import org.springframework.data.repository.Repository;
 import java.util.Optional;
 
 
-public interface ApartmentManagerRepository extends Repository<ApartmentManager,Long> {
-
-    Optional<ApartmentManager> save(ApartmentManager apartmentManager);
-
-    void delete(long id);
-
-    boolean exists(long id);
-
+public interface ApartmentManagerRepository extends BaseRepository<ApartmentManager,Long> {
 }
