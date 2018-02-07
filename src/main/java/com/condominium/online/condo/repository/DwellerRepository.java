@@ -6,13 +6,5 @@ import org.springframework.data.repository.Repository;
 import java.util.List;
 import java.util.Optional;
 
-public interface DwellerRepository extends Repository <Dweller, Long>{
-
-    Optional<Dweller> save(Dweller dweller);
-
-    void delete(long id);
-
-    boolean exists(long id);
-
-    List<Dweller> findAll();
+public interface DwellerRepository extends BaseRepository<Dweller, Long>{
 }

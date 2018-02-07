@@ -5,8 +5,5 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface GuestRepository extends Repository<Guest, Long> {
-
-    Optional<Guest> save(Guest guest);
-
+public interface GuestRepository extends BaseRepository<Guest, Long> {
 }

@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface IDwellerService {
 
     Dweller saveDweller(Dweller dweller) throws InvalidUserException;
+    Dweller updateDweller(long id, Dweller dweller) throws InvalidUserException;
 
     void deleteDweller(long id) throws InvalidUserException;
 
