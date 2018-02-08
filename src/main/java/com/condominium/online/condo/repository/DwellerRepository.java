@@ -1,18 +1,18 @@
 package com.condominium.online.condo.repository;
 
-import com.condominium.online.condo.entity.Dweller;
+import com.condominium.online.condo.entity.DwellerImpl;
 import org.springframework.data.repository.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface DwellerRepository extends Repository <Dweller, Long>{
+public interface DwellerRepository extends Repository <DwellerImpl, Long>{
 
-    Optional<Dweller> save(Dweller dweller);
+    Optional<DwellerImpl> save(DwellerImpl dweller);
 
     void delete(long id);
 
     boolean exists(long id);
 
-    List<Dweller> findAll();
+    List<DwellerImpl> findAll();
 }

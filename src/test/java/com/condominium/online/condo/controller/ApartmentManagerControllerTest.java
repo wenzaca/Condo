@@ -1,8 +1,8 @@
 package com.condominium.online.condo.controller;
 
-import com.condominium.online.condo.entity.ApartmentManager;
+import com.condominium.online.condo.entity.ApartmentManagerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
-import com.condominium.online.condo.service.ApartmentManagerService;
+import com.condominium.online.condo.service.ApartmentManagerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +33,7 @@ public class ApartmentManagerControllerTest {
     private static final String DWELLER_CPF = "12345678998";
     private static final String DWELLER_APT = "3 pencil";
 
-    private ApartmentManager apartmentManager;
+    private ApartmentManagerImpl apartmentManager;
 
     @Autowired
     private ObjectMapper jsonMapper;
@@ -42,17 +42,17 @@ public class ApartmentManagerControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private ApartmentManagerService apartmentManagerService;
+    private ApartmentManagerServiceImpl apartmentManagerService;
 
     @Before
     public void setUp(){
-        this.apartmentManager = new ApartmentManager(DWELLER_NAME, DWELLER_CPF, DWELLER_APT);
+        this.apartmentManager = new ApartmentManagerImpl(DWELLER_NAME, DWELLER_CPF, DWELLER_APT);
     }
 
     @Test
     public void shouldReturn_ApartmentManager() throws Exception{
 
-        when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenReturn(new ApartmentManager(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
+        when(apartmentManagerService.saveApartmentManager(apartmentManager)).thenReturn(new ApartmentManagerImpl(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
 
         this.mockMvc.perform(post("/condo/apartmentManager").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(apartmentManager)))

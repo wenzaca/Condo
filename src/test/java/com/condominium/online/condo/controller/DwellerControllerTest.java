@@ -1,9 +1,9 @@
 package com.condominium.online.condo.controller;
 
 
-import com.condominium.online.condo.entity.Dweller;
+import com.condominium.online.condo.entity.DwellerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
-import com.condominium.online.condo.service.DwellerService;
+import com.condominium.online.condo.service.DwellerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,7 +34,7 @@ public class DwellerControllerTest {
     private static final String DWELLER_CPF = "12345678998";
     private static final String DWELLER_APT = "3 pencil";
 
-    private Dweller dweller;
+    private DwellerImpl dweller;
 
     @Autowired
     private ObjectMapper jsonMapper;
@@ -43,17 +43,17 @@ public class DwellerControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private DwellerService dwellerService;
+    private DwellerServiceImpl dwellerService;
 
     @Before
     public void setUp(){
-        this.dweller = new Dweller(DWELLER_NAME, DWELLER_CPF, DWELLER_APT);
+        this.dweller = new DwellerImpl(DWELLER_NAME, DWELLER_CPF, DWELLER_APT);
     }
 
     @Test
     public void shouldReturn_Dweller() throws Exception{
 
-        when(dwellerService.saveDweller(dweller)).thenReturn(new Dweller(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
+        when(dwellerService.saveDweller(dweller)).thenReturn(new DwellerImpl(DWELLER_NAME, DWELLER_CPF, DWELLER_APT));
 
         this.mockMvc.perform(post("/condo/dweller").contentType(MediaType.APPLICATION_JSON)
             .content(jsonMapper.writeValueAsString(dweller)))

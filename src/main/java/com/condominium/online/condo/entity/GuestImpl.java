@@ -1,6 +1,6 @@
 package com.condominium.online.condo.entity;
 
-import com.condominium.online.condo.entity.interfaces.IGuest;
+import com.condominium.online.condo.entity.interfaces.Guest;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,18 +10,18 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @EqualsAndHashCode
-public class Guest extends User implements IGuest {
+public class GuestImpl extends User implements Guest {
 
     @Getter
     @Setter
     @NotNull
     private String guestFromApartment;
 
-    public Guest(){
+    public GuestImpl(){
 
     }
 
-    public Guest(String name, String cpf, String guestFromApartment) {
+    public GuestImpl(String name, String cpf, String guestFromApartment) {
         super(name, cpf);
         this.guestFromApartment = guestFromApartment;
     }

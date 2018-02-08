@@ -1,8 +1,8 @@
 package com.condominium.online.condo.controller;
 
-import com.condominium.online.condo.entity.ApartmentManager;
+import com.condominium.online.condo.entity.ApartmentManagerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
-import com.condominium.online.condo.service.ApartmentManagerService;
+import com.condominium.online.condo.service.ApartmentManagerServiceImpl;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @Api("v1 - Apartment Manager")
 public class ApartmentManagerController {
 
-    private ApartmentManagerService apartmentManagerService;
+    private ApartmentManagerServiceImpl apartmentManagerService;
 
     @Autowired
-    public ApartmentManagerController(ApartmentManagerService apartmentManagerService) {
+    public ApartmentManagerController(ApartmentManagerServiceImpl apartmentManagerService) {
         this.apartmentManagerService = apartmentManagerService;
     }
 
@@ -28,7 +28,7 @@ public class ApartmentManagerController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "OK"), @ApiResponse(code = 400, message = "BAD_REQUEST"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ApartmentManager saveApartmentManager(@RequestBody(required = true) ApartmentManager apartmentManager) throws InvalidUserException {
+    public ApartmentManagerImpl saveApartmentManager(@RequestBody(required = true) ApartmentManagerImpl apartmentManager) throws InvalidUserException {
         return this.apartmentManagerService.saveApartmentManager(apartmentManager);
     }
 

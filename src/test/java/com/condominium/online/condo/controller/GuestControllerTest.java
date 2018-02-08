@@ -1,8 +1,8 @@
 package com.condominium.online.condo.controller;
 
-import com.condominium.online.condo.entity.Guest;
+import com.condominium.online.condo.entity.GuestImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
-import com.condominium.online.condo.service.GuestService;
+import com.condominium.online.condo.service.GuestServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +31,7 @@ public class GuestControllerTest {
     private static final String GUEST_CPF = "12345678998";
     private static final String GUEST_APT = "3 pencil";
 
-    private Guest guest;
+    private GuestImpl guest;
 
     @Autowired
     private ObjectMapper jsonMapper;
@@ -40,17 +40,17 @@ public class GuestControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private GuestService guestService;
+    private GuestServiceImpl guestService;
 
     @Before
     public void setUp(){
-        this.guest = new Guest(GUEST_NAME, GUEST_CPF, GUEST_APT);
+        this.guest = new GuestImpl(GUEST_NAME, GUEST_CPF, GUEST_APT);
     }
 
     @Test
     public void shouldReturn_Guest() throws Exception{
 
-        when(guestService.saveGuest(guest)).thenReturn(new Guest(GUEST_NAME, GUEST_CPF, GUEST_APT));
+        when(guestService.saveGuest(guest)).thenReturn(new GuestImpl(GUEST_NAME, GUEST_CPF, GUEST_APT));
 
         this.mockMvc.perform(post("/condo/guest").contentType(MediaType.APPLICATION_JSON)
                 .content(jsonMapper.writeValueAsString(guest)))

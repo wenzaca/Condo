@@ -1,36 +1,36 @@
 package com.condominium.online.condo.service;
 
-import com.condominium.online.condo.entity.ApartmentManager;
+import com.condominium.online.condo.entity.ApartmentManagerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.repository.ApartmentManagerRepository;
-import com.condominium.online.condo.service.interfaces.IApartmentManagerService;
+import com.condominium.online.condo.service.interfaces.ApartmentManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class ApartmentManagerService implements IApartmentManagerService {
+public class ApartmentManagerServiceImpl implements ApartmentManagerService {
 
     ApartmentManagerRepository apartmentManagerRepository;
 
     @Autowired
-    public ApartmentManagerService(ApartmentManagerRepository apartmentManagerRepository){
+    public ApartmentManagerServiceImpl(ApartmentManagerRepository apartmentManagerRepository){
         this.apartmentManagerRepository = apartmentManagerRepository;
     }
 
     @Override
-    public ApartmentManager saveApartmentManager(ApartmentManager apartmentManager) throws InvalidUserException {
-        Optional.of(apartmentManager).map(ApartmentManager::getName).filter(name -> !name.isEmpty()).orElseThrow(() -> {
+    public ApartmentManagerImpl saveApartmentManager(ApartmentManagerImpl apartmentManager) throws InvalidUserException {
+        Optional.of(apartmentManager).map(ApartmentManagerImpl::getName).filter(name -> !name.isEmpty()).orElseThrow(() -> {
             return new InvalidUserException("Invalid Name");
         });
 
-        Optional.of(apartmentManager).map(ApartmentManager::getApartmentNumber).filter(apNumber -> !apNumber.isEmpty())
+        Optional.of(apartmentManager).map(ApartmentManagerImpl::getApartmentNumber).filter(apNumber -> !apNumber.isEmpty())
                 .orElseThrow(() -> {
                     return new InvalidUserException("Invalid apartment");
                 });
 
-        Optional.of(apartmentManager).map(ApartmentManager::getCpf).filter(cpf -> !cpf.isEmpty()).orElseThrow(() -> {
+        Optional.of(apartmentManager).map(ApartmentManagerImpl::getCpf).filter(cpf -> !cpf.isEmpty()).orElseThrow(() -> {
             return new InvalidUserException("Invalid CPF");
         });
 

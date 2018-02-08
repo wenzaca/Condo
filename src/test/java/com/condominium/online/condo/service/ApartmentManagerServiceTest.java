@@ -1,7 +1,7 @@
 package com.condominium.online.condo.service;
 
 
-import com.condominium.online.condo.entity.ApartmentManager;
+import com.condominium.online.condo.entity.ApartmentManagerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.repository.ApartmentManagerRepository;
 import org.junit.Before;
@@ -22,14 +22,14 @@ public class ApartmentManagerServiceTest {
     private static final String APARTMENT_MANAGER_1_NAME = "Godzilla";
     private static final String APARTMENT_MANAGER_1_CPF = "123.456.789.00";
     private static final String APARTMENT_MANAGER_1_APARTMENT_NUMBER = "68C";
-    private ApartmentManager apartmentManager;
+    private ApartmentManagerImpl apartmentManager;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
 
     @InjectMocks
-    private ApartmentManagerService apartmentManagerService;
+    private ApartmentManagerServiceImpl apartmentManagerService;
 
 
     @Mock
@@ -38,14 +38,14 @@ public class ApartmentManagerServiceTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        apartmentManager = new ApartmentManager(APARTMENT_MANAGER_1_NAME, APARTMENT_MANAGER_1_CPF, APARTMENT_MANAGER_1_APARTMENT_NUMBER);
+        apartmentManager = new ApartmentManagerImpl(APARTMENT_MANAGER_1_NAME, APARTMENT_MANAGER_1_CPF, APARTMENT_MANAGER_1_APARTMENT_NUMBER);
     }
 
     @Test
     public void whenSaveApartmentManagerThenReturnSavedDweller() throws Exception{
         when(apartmentManagerRepository.save(apartmentManager)).thenReturn(Optional.of(apartmentManager));
 
-        ApartmentManager apartmentManager = apartmentManagerService.saveApartmentManager(this.apartmentManager);
+        ApartmentManagerImpl apartmentManager = apartmentManagerService.saveApartmentManager(this.apartmentManager);
 
         assertEquals(apartmentManager.getName(), APARTMENT_MANAGER_1_NAME);
         assertEquals(apartmentManager.getCpf(), APARTMENT_MANAGER_1_CPF);

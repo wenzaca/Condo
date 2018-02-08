@@ -1,13 +1,12 @@
 package com.condominium.online.condo.service;
 
-import com.condominium.online.condo.entity.Dweller;
+import com.condominium.online.condo.entity.DwellerImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.repository.DwellerRepository;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -24,13 +23,13 @@ public class DwellerServiceTest {
     private static final String DWELLER1_NAME = "Godzilla";
     private static final String DWELLER1_CPF = "36724476925";
     private static final String DWELLER1_APARTMENT_NUMBER = "68C";
-    private Dweller dweller1;
+    private DwellerImpl dweller1;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
-    private DwellerService registerDwellerService;
+    private DwellerServiceImpl registerDwellerService;
 
     @Mock
     private DwellerRepository dwellerRepository;
@@ -38,14 +37,14 @@ public class DwellerServiceTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        dweller1 = new Dweller(DWELLER1_NAME, DWELLER1_CPF, DWELLER1_APARTMENT_NUMBER);
+        dweller1 = new DwellerImpl(DWELLER1_NAME, DWELLER1_CPF, DWELLER1_APARTMENT_NUMBER);
     }
 
     @Test
     public void whenSaveDwellerThenReturnSavedDweller() throws Exception{
         when(dwellerRepository.save(dweller1)).thenReturn(Optional.ofNullable(dweller1));
 
-        Dweller savedDweller = registerDwellerService.saveDweller(dweller1);
+        DwellerImpl savedDweller = registerDwellerService.saveDweller(dweller1);
 
         assertEquals(savedDweller.getName(), DWELLER1_NAME);
         assertEquals(savedDweller.getCpf(), DWELLER1_CPF);
