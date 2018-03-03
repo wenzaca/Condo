@@ -34,7 +34,7 @@ public class DwellerController {
         return this.dwellerService.saveDweller(dweller);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/dwellers")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiOperation(value = "Find all Dweller on database.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
