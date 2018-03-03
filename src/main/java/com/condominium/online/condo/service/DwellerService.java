@@ -42,6 +42,30 @@ public class DwellerService implements IDwellerService {
     }
 
     @Override
+    public Dweller updateDweller(long dwellerIdToUpdate, Dweller dweller) throws InvalidUserException {
+
+        Optional.of(dweller).map(Dweller::getName).filter(name -> !name.isEmpty()).orElseThrow(() -> {
+            return new InvalidUserException("Invalid Name");
+        });
+
+        Optional.of(dweller).map(Dweller::getApartmentNumber).filter(apNumber -> !apNumber.isEmpty())
+                .orElseThrow(() -> {
+                    return new InvalidUserException("Invalid apartment");
+                });
+
+        Optional.of(dweller).map(Dweller::getCpf).filter(cpf -> !cpf.isEmpty()).orElseThrow(() -> {
+            return new InvalidUserException("Invalid CPF");
+        });
+
+        if(!dwellerRepository.exists(dwellerIdToUpdate)){
+            throw new InvalidUserException("No such user");
+        }
+
+        return dwellerRepository.save(dweller).get();
+    }
+
+
+    @Override
     public void deleteDweller(long id) throws InvalidUserException {
 
         if(!dwellerRepository.exists(id)){

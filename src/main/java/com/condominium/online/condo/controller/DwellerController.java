@@ -42,9 +42,22 @@ public class DwellerController {
             @ApiResponse(code = 200, message = "OK", responseContainer = "List", response = Package.class),
             @ApiResponse(code = 400, message = "BAD_REQUEST"), @ApiResponse(code = 404, message = "NOT_FOUND"),
             @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
-    @ResponseStatus(code = HttpStatus.CREATED)
     public List<Dweller> getDwellers() {
         return this.dwellerService.getAllDwellers();
+    }
+
+
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
+    @ApiOperation(value = "Update a dweller")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "ACCEPT", value = "ACCEPT", defaultValue = "application/json", required = false, dataType = "string", paramType = "header")})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", responseContainer = "List", response = Package.class),
+            @ApiResponse(code = 400, message = "BAD_REQUEST"), @ApiResponse(code = 404, message = "NOT_FOUND"),
+            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")})
+    public Dweller updateDweller(@PathVariable("id") long id,
+            @RequestBody(required = true) Dweller dweller) throws InvalidUserException {
+        return dwellerService.updateDweller(id, dweller);
     }
 
     @DeleteMapping("/{id}")
