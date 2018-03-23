@@ -1,6 +1,6 @@
 package com.condominium.online.condo.service;
 
-import com.condominium.online.condo.entity.Guest;
+import com.condominium.online.condo.entity.GuestImpl;
 import com.condominium.online.condo.exceptions.InvalidUserException;
 import com.condominium.online.condo.repository.GuestRepository;
 import org.junit.Before;
@@ -21,13 +21,13 @@ public class GuestServiceTest {
     private static final String GUEST1_NAME = "Godzilla";
     private static final String GUEST1_CPF = "36724476925";
     private static final String GUEST1_IN_APARTMENT_NUMBER = "68C";
-    private Guest guest;
+    private GuestImpl guest;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @InjectMocks
-    private GuestService registerGuestService;
+    private GuestServiceImpl registerGuestService;
 
 
     @Mock
@@ -36,14 +36,14 @@ public class GuestServiceTest {
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        guest = new Guest(GUEST1_NAME, GUEST1_CPF, GUEST1_IN_APARTMENT_NUMBER);
+        guest = new GuestImpl(GUEST1_NAME, GUEST1_CPF, GUEST1_IN_APARTMENT_NUMBER);
     }
 
     @Test
     public void whenSaveDwellerThenReturnSavedDweller() throws Exception{
         when(guestRepository.save(guest)).thenReturn(Optional.ofNullable(guest));
 
-        Guest savedGuest = registerGuestService.saveGuest(guest);
+        GuestImpl savedGuest = registerGuestService.saveGuest(guest);
 
         assertEquals(savedGuest.getName(), GUEST1_NAME);
         assertEquals(savedGuest.getCpf(), GUEST1_CPF);
